@@ -5,6 +5,7 @@ import com.armyPOC.emailService.config.JmsConfig;
 import com.armyPOC.emailService.model.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,13 +19,12 @@ public class EmailController
 
 
    @RequestMapping(value = "/sendEmail", method = RequestMethod.POST)
-   public String sendEmail() {
+   public String sendEmail(@RequestBody Email email) {
 
       System.out.println("Sending ************************ .");
 
       jmsTemplate.convertAndSend(JmsConfig.JMS_TOPIC_MAIL, new Email(
-            "info@example.com", "Hello"));
-
+            email.getTo(), email.getBody()));
 
       return "Email send success!!!";
    }
