@@ -1,11 +1,13 @@
 package com.armyPOC.emailService.service;
 
+import com.armyPOC.emailService.config.JmsConfig;
 import com.armyPOC.emailService.config.RestClient;
 import com.armyPOC.emailService.model.Email;
 import com.microsoft.signalr.HubConnection;
 import com.microsoft.signalr.HubConnectionBuilder;
 import io.reactivex.Single;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
@@ -19,6 +21,7 @@ public class EmailServiceImpl implements EmailService {
 
    private HubConnection hubConnection;
    private JavaMailSender emailSender;
+   private JmsTemplate jmsTemplate;
 
 
    private RestClient restClient;
@@ -38,8 +41,9 @@ public class EmailServiceImpl implements EmailService {
 
    }
 
-   public EmailServiceImpl(JavaMailSender javaMailSender) {
+   public EmailServiceImpl(JavaMailSender javaMailSender, JmsTemplate jmsTemplate) {
       this.emailSender = javaMailSender;
+      this.jmsTemplate = jmsTemplate;
    }
 
 
@@ -57,7 +61,8 @@ public class EmailServiceImpl implements EmailService {
    public void startClient() {
 
       hubConnection.on("SendEmail", (message, email) -> {
-         readResponse(email);
+         jmsTemplate.convertAndSend(JmsConfig.JMS_TOPIC_MAIL, new Email(
+               email.getTo(), email.getBody()));
       }, String.class, Email.class);
 
 
@@ -66,27 +71,27 @@ public class EmailServiceImpl implements EmailService {
 
    }
 
-   private void readResponse(Email email) {
-
-      // TODO - this will need to read a response from a different endpoint that triggers an email to be sent
-
-      java.net.URI url = UriComponentsBuilder.newInstance().scheme("https")
-            .host("prod-80.westus.logic.azure.com")
-            .pathSegment("workflows")
-            .pathSegment("2d708852604e434e9513b10ee13849ea")
-            .pathSegment("triggers")
-            .pathSegment("manual")
-            .pathSegment("paths")
-            .pathSegment("invoke")
-            .pathSegment("1")
-            .pathSegment("email")
-            .queryParam("api-version", "2016-10-01")
-            .queryParam("sp", "%2Ftriggers%2Fmanual%2Frun")
-            .queryParam("sv", "1.0")
-            .queryParam("sig", "6D0BbKXR-LSVsjNRoGy6TwhMQmjzoSovGuaCqY_ycEU")
-            .build(true).toUri();
-
-      restClient.post(url, email);
-   }
+//   private void readResponse(Email email) {
+//
+//      // TODO - this will need to read a response from a different endpoint that triggers an email to be sent
+//
+//      java.net.URI url = UriComponentsBuilder.newInstance().scheme("https")
+//            .host("prod-80.westus.logic.azure.com")
+//            .pathSegment("workflows")
+//            .pathSegment("2d708852604e434e9513b10ee13849ea")
+//            .pathSegment("triggers")
+//            .pathSegment("manual")
+//            .pathSegment("paths")
+//            .pathSegment("invoke")
+//            .pathSegment("1")
+//            .pathSegment("email")
+//            .queryParam("api-version", "2016-10-01")
+//            .queryParam("sp", "%2Ftriggers%2Fmanual%2Frun")
+//            .queryParam("sv", "1.0")
+//            .queryParam("sig", "6D0BbKXR-LSVsjNRoGy6TwhMQmjzoSovGuaCqY_ycEU")
+//            .build(true).toUri();
+//
+//      restClient.post(url, email);
+//   }
 }
 
