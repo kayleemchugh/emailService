@@ -1,5 +1,7 @@
 package com.armyPOC.emailService;
 
+import com.armyPOC.emailService.service.EmailService;
+import com.armyPOC.emailService.service.EmailServiceImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,6 +17,10 @@ public class EmailServiceApplication {
 
 
 		SpringApplication.run(EmailServiceApplication.class, args);
+
+		EmailServiceImpl emailService = new EmailServiceImpl();
+
+		emailService.startClient();
 
 	}
 

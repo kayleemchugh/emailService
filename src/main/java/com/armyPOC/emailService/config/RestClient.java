@@ -1,10 +1,10 @@
 package com.armyPOC.emailService.config;
 
+import com.armyPOC.emailService.model.Email;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
-import javax.validation.constraints.Email;
 import java.net.URI;
 
 public class RestClient
@@ -15,7 +15,7 @@ public class RestClient
    private RestTemplate restTemplate;
    private HttpHeaders httpHeaders;
 
-   RestClient() {
+   public RestClient() {
       restTemplate = new RestTemplate();
       httpHeaders = new HttpHeaders();
       httpHeaders.setContentType(MediaType.APPLICATION_JSON);
@@ -30,7 +30,7 @@ public class RestClient
       return responseEntity.getBody();
    }
 
-   void post(URI uri, Email email) {
+   public void post(URI uri, Email email) {
       ResponseEntity<Email> responseEntity = restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(email, httpHeaders),  new ParameterizedTypeReference<Email>(){});
       this.setStatus(responseEntity.getStatusCode());
    }
