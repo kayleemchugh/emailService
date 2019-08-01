@@ -24,7 +24,7 @@ public class EmailController
       System.out.println("Sending ************************ .");
 
       jmsTemplate.convertAndSend(JmsConfig.JMS_TOPIC_MAIL, new Email(
-            email.getTo(), email.getBody()));
+            email.getEmailAddress(), email.getFirstName(), email.getHtml()));
 
       return "Email send success!!!";
    }
