@@ -2,36 +2,43 @@ package com.armyPOC.emailService.model;
 
 public class Email
 {
-   private String to;
-   private String body;
+   private String emailAddress;
+   private String html;
+   private String firstName;
 
    public Email() {
 
    }
 
-   public Email(String to, String body)
-   {
-      this.to = to;
-      this.body = body;
+   
+   public Email(String emailAddress, String firstName, String html) {
+      this.setEmailAddress(emailAddress);
+      this.setFirstName(firstName);
+      this.setHtml(html);
    }
 
-   public String getTo()
-   {
-      return to;
+   public String getEmailAddress() {
+      return emailAddress;
    }
 
-   public void setTo(String to)
-   {
-      this.to = to;
+   public void setEmailAddress(String emailAddress) {
+      this.emailAddress = emailAddress;
    }
 
-   public String getBody()
-   {
-      return body;
+   public String getFirstName() {
+      return firstName;
    }
 
-   public void setBody(String body)
-   {
-      this.body = body;
+   public void setFirstName(String firstName) {
+      this.firstName = firstName;
    }
+
+   public String getHtml() {
+      return html;
+   }
+
+   public void setHtml(String html) {
+      this.html = html;
+   }
+
 }
