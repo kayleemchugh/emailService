@@ -18,7 +18,7 @@ public class EmailController
    JmsTemplate jmsTemplate;
 
 
-   @RequestMapping(value = "/sendEmail", method = RequestMethod.POST)
+/*@RequestMapping(value = "/sendEmail", method = RequestMethod.POST)
    public String sendEmail(@RequestBody Email email) {
 
       System.out.println("Sending ************************ .");
@@ -27,5 +27,5 @@ public class EmailController
             email.getEmailAddress(), email.getFirstName(), email.getHtml()));
 
       return "Email send success!!!";
-   }
+   }*/
 }

@@ -34,12 +34,6 @@ public class EmailServiceImpl implements EmailService {
       } catch (MessagingException ex) {
          Logger.getLogger(EmailServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
       }
-
-      /*SimpleMailMessage message = new SimpleMailMessage();
-      message.setTo(emailAddress);
-      message.setSubject(subject);
-      message.setText(html);
-      emailSender.send(message);*/
    }
 
 
